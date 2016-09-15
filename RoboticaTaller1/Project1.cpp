@@ -1,16 +1,11 @@
 #include "Aria.h"
 #include "PrintingTask.h"
 #include "SensorDataTransTask.h"
-
-
-	// Need sensor readings? Try myRobot->getRangeDevices() to get all 
-	// range devices, then for each device in the list, call lockDevice(), 
-	// getCurrentBuffer() to get a list of recent sensor reading positions, then
-	// unlockDevice().
-
+#include<cmath>
 
 int main(int argc, char** argv)
 {
+
 	Aria::init();
 	ArArgumentParser parser(&argc, argv);
 	parser.loadDefaultArguments();
@@ -64,7 +59,6 @@ int main(int argc, char** argv)
 
 	robot.enableMotors();
 	robot.addAction(&keydriveAct, 45);
-
 
 	// Start the robot process cycle running. Each cycle, it calls the robot's
 	// tasks. When the PrintingTask was created above, it added a new
