@@ -1,8 +1,14 @@
 #include "IntegerPoint2D.h"
+#include<cmath>
 
 IntegerPoint2D::IntegerPoint2D(const int &_x, const int &_y) {
 	x = _x;
 	y = _y;
+}
+
+IntegerPoint2D::IntegerPoint2D(const Point2D &_point) {
+	x = (int)floor(_point.x);
+	y = (int)floor(_point.y);
 }
 
 IntegerPoint2D::IntegerPoint2D() {

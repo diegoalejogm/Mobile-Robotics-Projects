@@ -1,27 +1,42 @@
-#include "SensorDataTransTask.h"
+#include "SensorDataTask.h"
 #include "Transformation.h"
 #include "Aria.h"
 #include <list>
 #include <iostream>
+#include <fstream>
+
 #define PI acos(-1.0)
+#define POS_FILENAME ""
 
 // the constructor (note how it uses chaining to initialize myTaskCB)
-SensorDataTransTask::SensorDataTransTask(ArRobot *robot) :
-myTaskCB(this, &SensorDataTransTask::doTask)
+SensorDataTask::SensorDataTask(ArRobot *robot) :
+myTaskCB(this, &SensorDataTask::doTask)
 {
 	myRobot = robot;
-	outputFile = fopen("data.map", "w");
-	fprintf(outputFile, "2D-Map\nDATA\n");
+
+	std::ifstream inFile("position.txt");
+	
+	float x, y, th;
+	inFile >> x >> y >> th;
+	
+	ArLog::log(ArLog::Normal, "x %f  y %f  th  %f", x, y, th);
+	sceneTransformation = Transformation(Point2D(x, y), th*PI / 180);
+
+	robotFrameOutputFile = fopen("robotFrame.map", "w");
+	sceneFrameOutputFile = fopen("sceneFrame.map", "w");
+
+	fprintf(robotFrameOutputFile, "2D-Map\nDATA\n");
+	fprintf(sceneFrameOutputFile, "2D-Map\nDATA\n");
 	// just add it to the robot
-	myRobot->addSensorInterpTask("DataTransformationTask", 50, &myTaskCB);
+	myRobot->addSensorInterpTask("SensorDataTask", 50, &myTaskCB);
 }
 
-SensorDataTransTask::~SensorDataTransTask()
+SensorDataTask::~SensorDataTask()
 {
 	myRobot->remSensorInterpTask(&myTaskCB);
 }
 
-void SensorDataTransTask::doTask(void)
+void SensorDataTask::doTask(void)
 {
 	// We will lock the robot while using it to prevent changes by tasks in the robot's background task thread or any other threads. Each laser has an index. You can also store the laser's index or name (laser->getName()) and use that to get a reference (pointer) to the laser object using ArRobot::findLaser().
 	myRobot->lock();
@@ -47,10 +62,14 @@ void SensorDataTransTask::doTask(void)
 		// The current readings are a set of obstacle readings (with X,Y positions as well as other attributes) that are the most recent set from teh laser.
 		std::list<ArPoseWithTime*> *currentReadings = laser->getCurrentBuffer(); // see ArRangeDevice interface doc
 		for (std::list<ArPoseWithTime*>::iterator it = currentReadings->begin(); it != currentReadings->end() && laser->isConnected() && hasChanged; it++) {
-			IntegerPoint2D point = IntegerPoint2D((int)floor((*it)->getX()), (int)floor((*it)->getY()));
-			if (knownPoints.find(point) == knownPoints.end()) {
-				knownPoints.insert(point);
-				fprintf(outputFile, "%d\t%d\n", point.x, point.y);
+			Point2D rFramePoint = Point2D((*it)->getX(), (*it)->getY());
+			IntegerPoint2D rFrameIntPoint = IntegerPoint2D(rFramePoint);
+			if (knownPoints.find(rFrameIntPoint) == knownPoints.end()) {
+				knownPoints.insert(rFrameIntPoint);
+				fprintf(robotFrameOutputFile, "%d\t%d\n", rFrameIntPoint.x, rFrameIntPoint.y);
+				Point2D sceneFramePoint = sceneTransformation.apply(rFramePoint);
+				IntegerPoint2D sceneFrameIntPoint = IntegerPoint2D(sceneFramePoint);
+				fprintf(sceneFrameOutputFile, "%d\t%d\n", sceneFrameIntPoint.x, sceneFrameIntPoint.y);
 			}
 		}
 		laser->unlockDevice();
@@ -60,7 +79,7 @@ void SensorDataTransTask::doTask(void)
 		ArLog::log(ArLog::Normal, "No lasers.");
 	else
 		ArLog::log(ArLog::Normal, "");
-	ArLog::log(ArLog::Normal, "Points Detected: %d", knownPoints.size());
+	//ArLog::log(ArLog::Normal, "Points Detected: %d", knownPoints.size());
 	// Unlock robot and sleep for 5 seconds before next loop.
 	myRobot->unlock();
 	//ArUtil::sleep(5000);

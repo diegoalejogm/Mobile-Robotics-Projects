@@ -28,4 +28,3 @@ Point2D Transformation::apply(const Point2D& input) {
 bool Transformation::operator== (const Transformation &e1) const {
 	return (e1.translation == translation) && (abs(matrix[0][0] - e1.matrix[0][0]) < EPS && abs(matrix[0][1] - e1.matrix[0][1]) < EPS);
 }
-

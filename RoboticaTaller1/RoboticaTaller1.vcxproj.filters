@@ -27,10 +27,10 @@
     <ClCompile Include="Point2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SensorDataTransTask.cpp">
+    <ClCompile Include="IntegerPoint2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IntegerPoint2D.cpp">
+    <ClCompile Include="SensorDataTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,10 +47,10 @@
     <ClInclude Include="Point2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SensorDataTransTask.h">
+    <ClInclude Include="IntegerPoint2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IntegerPoint2D.h">
+    <ClInclude Include="SensorDataTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

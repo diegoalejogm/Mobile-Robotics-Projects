@@ -1,6 +1,6 @@
 #include "Aria.h"
 #include "PrintingTask.h"
-#include "SensorDataTransTask.h"
+#include "SensorDataTask.h"
 #include<cmath>
 
 int main(int argc, char** argv)
@@ -48,8 +48,8 @@ int main(int argc, char** argv)
 	// This object encapsulates the task we want to do every cycle. 
 	// Upon creation, it puts a callback functor in the ArRobot object
 	// as a 'user task'.
-	PrintingTask pt(&robot);
-	SensorDataTransTask sdtt(&robot);
+	//PrintingTask pt(&robot);
+	SensorDataTask sdtt(&robot);
 
 	// initialize aria
 	Aria::init();

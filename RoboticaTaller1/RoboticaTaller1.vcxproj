@@ -15,7 +15,7 @@
     <ClCompile Include="Point2D.cpp" />
     <ClCompile Include="PrintingTask.cpp" />
     <ClCompile Include="Project1.cpp" />
-    <ClCompile Include="SensorDataTransTask.cpp" />
+    <ClCompile Include="SensorDataTask.cpp" />
     <ClCompile Include="Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -23,7 +23,7 @@
     <ClInclude Include="Point2D.h" />
     <ClInclude Include="PrintingTask.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SensorDataTransTask.h" />
+    <ClInclude Include="SensorDataTask.h" />
     <ClInclude Include="Transformation.h" />
   </ItemGroup>
   <ItemGroup>
@@ -60,8 +60,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>bin\</OutDir>
-    <IntDir>obj\$(ConfigurationName)\</IntDir>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
