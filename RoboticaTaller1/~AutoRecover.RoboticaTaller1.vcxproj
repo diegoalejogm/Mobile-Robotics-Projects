@@ -11,23 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Point2D.cpp" />
     <ClCompile Include="PrintingTask.cpp" />
     <ClCompile Include="Project1.cpp" />
-    <ClCompile Include="SensorDataTransTask.cpp" />
-    <ClCompile Include="Transformation.cpp" />
     <ClCompile Include="TransformationUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Point2D.h" />
     <ClInclude Include="PrintingTask.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="SensorDataTransTask.h" />
-    <ClInclude Include="Transformation.h" />
     <ClInclude Include="TransformationUtil.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="RoboticaTaller1.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{90EE032B-ACF5-4D5E-917F-BAF9E7D8F58E}</ProjectGuid>
