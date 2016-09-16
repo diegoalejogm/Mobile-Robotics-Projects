@@ -22,3 +22,8 @@ Point2D Point2D::operator+ (const Point2D &e1) const
 bool Point2D::operator== (const Point2D &e1) const {
 	return (abs(x - e1.x) < EPS) && (abs(y - e1.y) < EPS);
 }
+
+prec Point2D::dist(const Point2D & e1)
+{
+	return sqrt((e1.x - x)*(e1.x - x) + (e1.y - y)*(e1.y - y));
+}

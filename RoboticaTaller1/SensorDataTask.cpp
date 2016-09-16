@@ -6,6 +6,7 @@
 #include <fstream>
 
 #define PI acos(-1.0)
+#define EPS 1e-6
 #define POS_FILENAME ""
 
 // the constructor (note how it uses chaining to initialize myTaskCB)
@@ -42,8 +43,12 @@ void SensorDataTask::doTask(void)
 	myRobot->lock();
 
 	Transformation currentPos = Transformation(Point2D(myRobot->getX(), myRobot->getY()), myRobot->getTh()*PI / 180);
-	bool hasChanged = !(currentPos == lastKnownLocation);
-	lastKnownLocation = currentPos;
+	bool hasChanged = false;
+	if (currentPos.translation.dist(lastKnownLocation.translation) > 3.0 - EPS || abs(currentPos.rotation - lastKnownLocation.rotation)>PI/45) {
+		lastKnownLocation = currentPos;
+		hasChanged = true;
+	}
+	
 	
 	int numLasers = 0;
 

@@ -10,4 +10,5 @@ struct Point2D{
 	
 	Point2D operator+ (const Point2D &e1) const;
 	bool operator== (const Point2D &e1) const;
+	prec dist(const Point2D &e1);
 };
