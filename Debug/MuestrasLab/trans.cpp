@@ -10,6 +10,6 @@ main(){
     cin>>a;
     cout<<a<<endl;
     while(cin>>b>>c){
-        cout<<c+450<<" "<<-b+450<<endl;
+        cout<<-c+450<<" "<<b+450<<endl;
     }
 }
