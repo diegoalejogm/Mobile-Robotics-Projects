@@ -1,8 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 main(){
-    freopen("PrimeraMuestraSceneFrame.map","r",stdin);
-    freopen("PrimeraMuestraFrame.map","w",stdout);
+    freopen("PrimeraMuestraFrame.map","r",stdin);
+    freopen("PrimeraMuestraSceneFrame.map","w",stdout);
     string a;
     int b,c;
     cin>>a;
@@ -10,6 +10,6 @@ main(){
     cin>>a;
     cout<<a<<endl;
     while(cin>>b>>c){
-        cout<<b-450<<" "<<c<<endl;
+        cout<<c+450<<" "<<-b+450<<endl;
     }
 }
