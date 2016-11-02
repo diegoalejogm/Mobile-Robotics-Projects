@@ -1,0 +1,33 @@
+﻿Build started 11/1/16 20:24:05.
+     1>Project "\\Mac\Google Drive\Robotica Móvil\Proyectos\2\RoboticaTaller1\RoboticaTaller1\RoboticaTaller1.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files\MobileRobots\Aria\include" /I"C:\Program Files\LeapSDK\include" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt IntegerPoint2D.cpp Point2D.cpp PrintingTask.cpp Project1.cpp SensorDataTask.cpp Transformation.cpp
+         IntegerPoint2D.cpp
+         Point2D.cpp
+         PrintingTask.cpp
+         Project1.cpp
+         SensorDataTask.cpp
+         Transformation.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _UNICODE /D UNICODE /l"0x0409" /nologo /fo"Release\RoboticaTaller1.res" RoboticaTaller1.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"\\Mac\Google Drive\Robotica Móvil\Proyectos\2\RoboticaTaller1\Release\RoboticaTaller1.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\MobileRobots\Aria\lib" /LIBPATH:"C:\Program Files\LeapSDK\lib\x64" AriaVC12.lib winmm.lib advapi32.lib ws2_32.lib Leap.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"\\Mac\Google Drive\Robotica Móvil\Proyectos\2\RoboticaTaller1\Release\RoboticaTaller1.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"\\Mac\Google Drive\Robotica Móvil\Proyectos\2\RoboticaTaller1\Release\RoboticaTaller1.lib" /MACHINE:X86 /SAFESEH Release\RoboticaTaller1.res
+         Release\IntegerPoint2D.obj
+         Release\Point2D.obj
+         Release\PrintingTask.obj
+         Release\Project1.obj
+         Release\SensorDataTask.obj
+         Release\Transformation.obj
+         Generating code
+         Finished generating code
+         RoboticaTaller1.vcxproj -> \\Mac\Google Drive\Robotica Móvil\Proyectos\2\RoboticaTaller1\Release\RoboticaTaller1.exe
+       PostBuildEvent:
+         xcopy /yr "C:\Program Files\LeapSDK\lib\x86\Leap.dll" "\\Mac\Google Drive\Robotica Móvil\Proyectos\2\RoboticaTaller1\Release\"
+         :VCEnd
+         C:\Program Files\LeapSDK\lib\x86\Leap.dll
+         1 archivo(s) copiado(s)
+     1>Done Building Project "\\Mac\Google Drive\Robotica Móvil\Proyectos\2\RoboticaTaller1\RoboticaTaller1\RoboticaTaller1.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:24.11
