@@ -6,6 +6,8 @@
 *.user
 *.sln.docstates
 
+*.gdoc
+
 # Build results
 
 [Dd]ebug/
