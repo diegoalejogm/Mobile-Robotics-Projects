@@ -1,0 +1,18 @@
+﻿Build started 9/17/16 02:27:49.
+     1>Project "X:\Robotica Móvil\Proyectos\1\RoboticaTaller1\RoboticaTaller1\RoboticaTaller1.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"X:\Robotica Móvil\Proyectos\1\RoboticaTaller1\Release\RoboticaTaller1.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\MobileRobots\Aria\lib" AriaVC12.lib winmm.lib advapi32.lib ws2_32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"X:\Robotica Móvil\Proyectos\1\RoboticaTaller1\Release\RoboticaTaller1.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"X:\Robotica Móvil\Proyectos\1\RoboticaTaller1\Release\RoboticaTaller1.lib" /MACHINE:X86 /SAFESEH Release\RoboticaTaller1.res
+         Release\IntegerPoint2D.obj
+         Release\Point2D.obj
+         Release\PrintingTask.obj
+         Release\Project1.obj
+         Release\SensorDataTask.obj
+         Release\Transformation.obj
+         Generating code
+         Finished generating code
+         RoboticaTaller1.vcxproj -> X:\Robotica Móvil\Proyectos\1\RoboticaTaller1\Release\RoboticaTaller1.exe
+     1>Done Building Project "X:\Robotica Móvil\Proyectos\1\RoboticaTaller1\RoboticaTaller1\RoboticaTaller1.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.72

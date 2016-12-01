@@ -1,0 +1,11 @@
+Dentro de la carpeta de release se encuentra un ejecutable RoboticaTaller1.exe, esta es la aplicación principal.
+Si el robot es simulado localmente, basta con correr el ejecutable. En caso de que se vaya a correr con el robot real es necesario especificar por línea de comandos la ip del robot.
+Cuando el programa está en ejecucción el usuario puede controlar el robot con las flechas del teclado para cambiar su velocidad y ángulo. Cuando desee terminar la simulación el usuario puede presionar ESC para terminar el proceso.
+Los siguientes archivos están vinculados al ejecutable:
+
+-position.txt:
+	Un archivo de configuración necesario que contiene la información del robot con respecto a la escena. Contiene la coordenada en x, la coordenada en y el ánuglo inicial del robot con respecto a la escena.
+-robotFrame.map:
+	Un archivo producido por el programa durante la ejecucción. Contiene el mapa de las posiciones detectadas por el sensor con respecto a la posición inicial del robot.
+-sceneFrame.map:
+	Un archivo producido por el programa durante la ejecucción. Contiene el mapa de las posiciones detectadas por el sensor con respecto a la escena del robot. Para integrar el mapa con el diagrama que representa la escena es necesario copiar el contenido de este archivo, salvo la primera línea, al final de el .map de descripción de la escena.
