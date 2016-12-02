@@ -4,6 +4,20 @@
 
 #include <iostream>
 using namespace std;
+int orientation(int from, int to) {
+	if (to < 0) to += 360;
+	if (from < 0) from += 360;
+	if (to - from >= 180 || (to - from < 0) && (to-from > -180) ) return -1;
+	return 1;
+}
+bool close(int anxg1, double ang2) {
+	double ang1 = (double) anxg1;
+	if (ang1 > ang2) swap(ang1, ang2);
+	double dist = min(abs(ang2 - ang1), abs(ang2 - ang1 + 360));
+	cout << dist << endl;
+	if (dist < 5.0) return true;
+	return false;
+}
 int main(int argc, char** argv)
 {
 	cout << "WATT" << endl;
@@ -172,29 +186,56 @@ int main(int argc, char** argv)
 	vector<Configuration> robot1Path = PathPlanning::getRobotPath(1);
 	vector<Configuration> robot2Path = PathPlanning::getRobotPath(2);
 	int currentStep = 0;
-
-
+	bool rotating1 = false;
+	bool rotating2 = false;
+	int currentAngle1 = 0, currentAngle2 = 0;
 	while (robot1.isRunning() && robot2.isRunning() && currentStep <= robot1Path.size())
 	{
 		ArUtil::sleep(100);
 		robot1.lock();
 		robot2.lock();
-		cout << done1 << " " << done2 << " " << currentStep << endl;
-		if (!done1 && gotoPoseAction1.haveAchievedGoal()) {
+		cout << done1 << " " << done2 << " " << currentStep << " "<< rotating1<< " "<< rotating2 <<endl;
+		if (rotating1 && close(currentAngle1, robot1.getPose().getTh())) {
+			
+			robot1.setRotVel(0);
+			done1 = true;
+			rotating1 = false;
+		}
+		if (!done1 && !rotating1 && gotoPoseAction1.haveAchievedGoal()) {
 			done1 = true;
 		}
-		if (!done2 && gotoPoseAction2.haveAchievedGoal()) {
+		if (rotating2 && close(currentAngle2, robot2.getPose().getTh())) {
+			robot2.setRotVel(0);
+			done2 = true;
+			rotating2 = false;
+		}
+		if (!done2 && !rotating2 && gotoPoseAction2.haveAchievedGoal()) {
 			done2 = true;
 		}
 		if (done1 && done2) {
+
 			done1 = false;
 			done2 = false;
-
-			pose1 = ArPose(robot1Path[currentStep].position.x, robot1Path[currentStep].position.y, robot1Path[currentStep].angle);
-			pose2 = ArPose(robot2Path[currentStep].position.x, robot2Path[currentStep].position.y, robot2Path[currentStep].angle);
-
-			gotoPoseAction1.setGoal(pose1);
-			gotoPoseAction2.setGoal(pose2);
+			if (currentStep < robot1Path.size()) {
+				pose1 = ArPose(robot1Path[currentStep].position.x, robot1Path[currentStep].position.y, robot1Path[currentStep].angle);
+				pose2 = ArPose(robot2Path[currentStep].position.x, robot2Path[currentStep].position.y, robot2Path[currentStep].angle);
+				if (currentAngle1 != robot1Path[currentStep].angle) {
+					rotating1 = true;
+					robot1.setRotVel(20 * orientation(currentAngle1, robot1Path[currentStep].angle));
+					currentAngle1 = robot1Path[currentStep].angle;
+				}
+				else {
+					gotoPoseAction1.setGoal(pose1);
+				}
+				if (currentAngle2 != robot2Path[currentStep].angle) {
+					rotating2 = true;
+					robot2.setRotVel(20 * orientation(currentAngle2, robot2Path[currentStep].angle));
+					currentAngle2 = robot2Path[currentStep].angle;
+				}
+				else {
+					gotoPoseAction2.setGoal(pose2);
+				}
+			}
 			currentStep++;
 		}
 		/*

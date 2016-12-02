@@ -8,8 +8,8 @@
 #include <string>
 #include <queue>
 
-#define SAFETY_DISTANCE false
-#define FIRST_TRY_TO_SPIN false
+#define SAFETY_DISTANCE true
+#define FIRST_TRY_TO_SPIN true
 #define PATH_SHORTENER false
 #define CELL_SIZE 400
 #define PI acos(-1.0)
@@ -234,7 +234,10 @@ void generateSolution() {
 		solRobot1.push_back(lastKnown1);
 		solRobot2.push_back(lastKnown2);
 	}
-
+	lastKnown1.angle = simplifyAngle(endposition[0].angle - startposition[0].angle);
+	solRobot1.push_back(lastKnown1);
+	lastKnown2.angle = simplifyAngle(endposition[1].angle - startposition[1].angle);
+	solRobot2.push_back(lastKnown2);
 	for (int i = 0; i < solRobot1.size(); i++) {
 		debug << "A: " << solRobot1[i].position.x << " " << solRobot1[i].position.y << " " << solRobot1[i].angle << endl;
 		debug << "B: " << solRobot2[i].position.x << " " << solRobot2[i].position.y << " " << solRobot2[i].angle << endl;
