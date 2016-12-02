@@ -1,22 +1,22 @@
 #include "Aria.h"
-#include "PrintingTask.h"
-#include "SensorDataTask.h"
-#include<cmath>
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-
 	Aria::init();
 	ArArgumentParser parser(&argc, argv);
 	parser.loadDefaultArguments();
 	ArRobot robot;
-
+	ArAnalogGyro gyro(&robot);
+	ArSonarDevice sonar;
 	ArRobotConnector robotConnector(&parser, &robot);
 	ArLaserConnector laserConnector(&parser, &robot, &robotConnector);
 
+
+	// Connect to the robot, get some initial data from it such as type and name,
+	// and then load parameter files for this robot.
 	if (!robotConnector.connectRobot())
 	{
-		ArLog::log(ArLog::Terse, "robotSyncTaskExample: Could not connect to the robot.");
+		ArLog::log(ArLog::Terse, "gotoActionExample: Could not connect to the robot.");
 		if (parser.checkHelpAndWarnUnparsed())
 		{
 			// -help not given
@@ -31,45 +31,74 @@ int main(int argc, char** argv)
 		Aria::exit(1);
 	}
 
-	// Connect to laser(s) defined in parameter files, if LaseAutoConnect is true
-	// for the laser. 
-	// (Some flags are available as arguments to connectLasers() to control error behavior and to control which lasers are put in the list of lasers stored by ArRobot. See docs for details.)
-	if (!laserConnector.connectLasers())
+	ArLog::log(ArLog::Normal, "gotoActionExample: Connected to robot.");
+
+	robot.addRangeDevice(&sonar);
+	robot.runAsync(true);
+
+	// Make a key handler, so that escape will shut down the program
+	// cleanly
+	ArKeyHandler keyHandler;
+	Aria::setKeyHandler(&keyHandler);
+	robot.attachKeyHandler(&keyHandler);
+	printf("You may press escape to exit\n");
+
+	// Collision avoidance actions at higher priority
+	ArActionLimiterForwards limiterAction("speed limiter near", 300, 600, 250);
+	ArActionLimiterForwards limiterFarAction("speed limiter far", 300, 1100, 400);
+	ArActionLimiterTableSensor tableLimiterAction;
+	robot.addAction(&tableLimiterAction, 100);
+	robot.addAction(&limiterAction, 95);
+	robot.addAction(&limiterFarAction, 90);
+
+	// Goto action at lower priority
+	ArActionGoto gotoPoseAction("goto",ArPose(0.0,0.0,0.0),100.0,400,250,7);
+	robot.addAction(&gotoPoseAction, 50);
+
+	// Stop action at lower priority, so the robot stops if it has no goal
+//	ArActionStop stopAction("stop");
+//	robot.addAction(&stopAction, 40);
+
+
+	// turn on the motors, turn off amigobot sounds
+	robot.enableMotors();
+	robot.comInt(ArCommands::SOUNDTOG, 0);
+
+	
+	const int duration = 30000; //msec
+	ArLog::log(ArLog::Normal, "Going to four goals in turn for %d seconds, then cancelling goal and exiting.", duration / 1000);
+
+
+
+
+	bool first = true;
+	int goalNum = 0;
+	ArTime start;
+	start.setToNow();
+	while (Aria::getRunning())
 	{
-		ArLog::log(ArLog::Terse, "Could not connect to configured lasers. Exiting.");
-		Aria::exit(3);
-		return 3;
+		robot.lock();
+
+		// Choose a new goal if this is the first loop iteration, or if we 
+		// achieved the previous goal.
+		if (first)
+		{
+			first = false;
+			gotoPoseAction.setGoal(ArPose(2500, 0));
+			
+			ArLog::log(ArLog::Normal, "Going to next goal at %.0f %.0f",
+				gotoPoseAction.getGoal().getX(), gotoPoseAction.getGoal().getY());
+		}
+		else if (gotoPoseAction.haveAchievedGoal())
+		{
+			break;
+		}
+
+		robot.unlock();
+		ArUtil::sleep(100);
 	}
 
-	ArLog::log(ArLog::Normal, "Connected to all lasers.");
-
-	ArLog::log(ArLog::Normal, "robotSyncTaskExample: Connected to robot.");
-
-	// This object encapsulates the task we want to do every cycle. 
-	// Upon creation, it puts a callback functor in the ArRobot object
-	// as a 'user task'.
-	//PrintingTask pt(&robot);
-	SensorDataTask sdtt(&robot);
-
-	// initialize aria
-	Aria::init();
-
-	// the keydrive action
-	ArActionKeydrive keydriveAct;
-
-	robot.enableMotors();
-	robot.addAction(&keydriveAct, 45);
-
-	// Start the robot process cycle running. Each cycle, it calls the robot's
-	// tasks. When the PrintingTask was created above, it added a new
-	// task to the robot. 'true' means that if the robot connection
-	// is lost, then ArRobot's processing cycle ends and this call returns.
-	robot.run(true);
-
-	// Allow some time to read laser data
-	ArUtil::sleep(500);
-
-	printf("Disconnected. Goodbye.\n");
-
+	// Robot disconnected or time elapsed, shut down
+	Aria::exit(0);
 	return 0;
 }
