@@ -1,9 +1,13 @@
+#include "Configuration.h"
+#include "PathPlanning.h"
 #include "Aria.h"
 
-
+#include <iostream>
+using namespace std;
 int main(int argc, char** argv)
 {
-
+	cout << "WATT" << endl;
+	PathPlanning::Init (); 
 	// initialize ARIA
 	Aria::init();
 
@@ -159,29 +163,58 @@ int main(int argc, char** argv)
 	// calls above.
 	bool first = true;
 	bool last = false;
-	while (robot1.isRunning() && robot2.isRunning())
+
+	bool done1 = true;
+	bool done2 = true;
+
+	ArPose pose1 = ArPose(0, 0, 0);
+	ArPose pose2 = ArPose(0, 0, 0);
+	vector<Configuration> robot1Path = PathPlanning::getRobotPath(1);
+	vector<Configuration> robot2Path = PathPlanning::getRobotPath(2);
+	int currentStep = 0;
+
+
+	while (robot1.isRunning() && robot2.isRunning() && currentStep <= robot1Path.size())
 	{
 		ArUtil::sleep(100);
 		robot1.lock();
 		robot2.lock();
+		cout << done1 << " " << done2 << " " << currentStep << endl;
+		if (!done1 && gotoPoseAction1.haveAchievedGoal()) {
+			done1 = true;
+		}
+		if (!done2 && gotoPoseAction2.haveAchievedGoal()) {
+			done2 = true;
+		}
+		if (done1 && done2) {
+			done1 = false;
+			done2 = false;
 
+			pose1 = ArPose(robot1Path[currentStep].position.x, robot1Path[currentStep].position.y, robot1Path[currentStep].angle);
+			pose2 = ArPose(robot2Path[currentStep].position.x, robot2Path[currentStep].position.y, robot2Path[currentStep].angle);
+
+			gotoPoseAction1.setGoal(pose1);
+			gotoPoseAction2.setGoal(pose2);
+			currentStep++;
+		}
+		/*
 		if (first)
 		{
 			first = false;
-			gotoPoseAction1.setGoal(ArPose(1500, 0, 0.0));
+			gotoPoseAction1.setGoal(ArPose(0, 0, 0.0));
 			gotoPoseAction2.setGoal(ArPose(1500, -1, 0.0));
 		}
 		else if (!last && gotoPoseAction1.haveAchievedGoal() && gotoPoseAction2.haveAchievedGoal())
 		{
 			last = true;
 			gotoPoseAction1.setGoal(ArPose(2500, 0, 0.0));
-			gotoPoseAction2.setGoal(ArPose(2500, -1, 0.0));
+			gotoPoseAction2.setGoal(ArPose(1550, -1, 180.0));
 		}
 		else if (last && gotoPoseAction1.haveAchievedGoal() && gotoPoseAction2.haveAchievedGoal())
 		{
 			break;
 		}
-
+		*/
 		robot2.unlock();
 		robot1.unlock();
 	}
