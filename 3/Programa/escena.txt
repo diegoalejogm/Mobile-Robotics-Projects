@@ -1,16 +1,16 @@
 filas: 9
 columnas: 9
-1i: 600, 2200, 0
-1f: 3000, 2200, 0
-2i: 600, 1400, 0
-2f: 3000, 1400, 0
+1i: 200, 1800, 0
+1f: 3000, 600, 270
+2i: 3400, 1800, 180
+2f: 600, 600, 270
 Matriz libres (oo) y ocupadas (xx)
-oo oo oo oo oo oo oo oo oo
-oo oo oo oo oo oo oo oo oo
-oo oo oo oo oo oo oo oo oo
-oo 1i oo xx xx xx oo 1f oo
+oo oo oo oo xx oo oo oo oo
+oo oo oo oo xx oo oo oo oo
+oo oo oo oo xx oo oo oo oo
 oo oo oo xx xx xx oo oo oo
-oo 2i oo xx xx xx oo 2f oo
-oo oo oo oo oo oo oo oo oo
-oo oo oo oo oo oo oo oo oo
-oo oo oo oo oo oo oo oo oo
+1i oo oo oo oo oo oo oo 2i
+oo oo oo xx xx xx oo oo oo
+oo oo oo oo xx oo oo oo oo
+oo 2f oo oo xx oo oo 1f oo
+oo oo oo oo xx oo oo oo oo

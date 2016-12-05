@@ -3,6 +3,7 @@
 #include "Aria.h"
 
 #include <iostream>
+#include <ctime>
 using namespace std;
 int orientation(int from, int to) {
 	if (to < 0) to += 360;
@@ -14,14 +15,17 @@ bool close(int anxg1, double ang2) {
 	double ang1 = (double) anxg1;
 	if (ang1 > ang2) swap(ang1, ang2);
 	double dist = min(abs(ang2 - ang1), abs(ang2 - ang1 + 360));
-	cout << dist << endl;
-	if (dist < 5.0) return true;
+//	cout << dist << endl;
+	if (dist < 2.5) return true;
 	return false;
 }
 int main(int argc, char** argv)
 {
-	cout << "WATT" << endl;
+	clock_t t1, t2;
+	t1 = clock();
 	PathPlanning::Init (); 
+	t1 = clock() - t1;
+	cout << "Initial planning: " << ((double) t1) / CLOCKS_PER_SEC << endl;
 	// initialize ARIA
 	Aria::init();
 
@@ -97,8 +101,8 @@ int main(int argc, char** argv)
 	std::string str;
 
 	// open the connection, if this fails exit
-	ArLog::log(ArLog::Normal, "Connecting to first robot at %s:%d...", host1, port1);
-	if ((ret = con1.open(host1, port1)) != 0)
+	ArLog::log(ArLog::Normal, "Connecting to first robot at %s...", host1);
+	if ((ret = con1.open(host1,port1)) != 0)
 	{
 		str = con1.getOpenMessage(ret);
 		printf("Open failed to robot 1: %s\n", str.c_str());
@@ -135,8 +139,8 @@ int main(int argc, char** argv)
 	//
 
 	// open the connection, if this fails exit
-	ArLog::log(ArLog::Normal, "Connecting to second robot at %s:%d...", host2, port2);
-	if ((ret = con2.open(host2, port2)) != 0)
+	//ArLog::log(ArLog::Normal, "Connecting to second robot at %s:%d...", host2, port2);
+	if ((ret = con2.open(host2,port2)) != 0)
 	{
 		str = con2.getOpenMessage(ret);
 		printf("Open failed to robot 2: %s\n", str.c_str());
@@ -189,12 +193,14 @@ int main(int argc, char** argv)
 	bool rotating1 = false;
 	bool rotating2 = false;
 	int currentAngle1 = 0, currentAngle2 = 0;
+	t2 = clock();
+	
 	while (robot1.isRunning() && robot2.isRunning() && currentStep <= robot1Path.size())
 	{
 		ArUtil::sleep(100);
 		robot1.lock();
 		robot2.lock();
-		cout << done1 << " " << done2 << " " << currentStep << " "<< rotating1<< " "<< rotating2 <<endl;
+		//cout << done1 << " " << done2 << " " << currentStep << " "<< rotating1<< " "<< rotating2 <<endl;
 		if (rotating1 && close(currentAngle1, robot1.getPose().getTh())) {
 			
 			robot1.setRotVel(0);
@@ -221,7 +227,7 @@ int main(int argc, char** argv)
 				pose2 = ArPose(robot2Path[currentStep].position.x, robot2Path[currentStep].position.y, robot2Path[currentStep].angle);
 				if (currentAngle1 != robot1Path[currentStep].angle) {
 					rotating1 = true;
-					robot1.setRotVel(20 * orientation(currentAngle1, robot1Path[currentStep].angle));
+					robot1.setRotVel(10 * orientation(currentAngle1, robot1Path[currentStep].angle));
 					currentAngle1 = robot1Path[currentStep].angle;
 				}
 				else {
@@ -229,7 +235,7 @@ int main(int argc, char** argv)
 				}
 				if (currentAngle2 != robot2Path[currentStep].angle) {
 					rotating2 = true;
-					robot2.setRotVel(20 * orientation(currentAngle2, robot2Path[currentStep].angle));
+					robot2.setRotVel(10 * orientation(currentAngle2, robot2Path[currentStep].angle));
 					currentAngle2 = robot2Path[currentStep].angle;
 				}
 				else {
@@ -260,6 +266,8 @@ int main(int argc, char** argv)
 		robot1.unlock();
 	}
 
+	t2 = clock() - t2;
+	cout << "Execution time " << ((double)t2) / CLOCKS_PER_SEC << endl;
 
 	// exit program if both robots disconnect.
 	ArLog::log(ArLog::Normal, "Both robots disconnected.");

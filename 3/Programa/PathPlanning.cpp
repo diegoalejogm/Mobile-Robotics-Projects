@@ -8,7 +8,7 @@
 #include <string>
 #include <queue>
 
-#define SAFETY_DISTANCE true
+#define SAFETY_DISTANCE false
 #define FIRST_TRY_TO_SPIN true
 #define PATH_SHORTENER false
 #define CELL_SIZE 400
