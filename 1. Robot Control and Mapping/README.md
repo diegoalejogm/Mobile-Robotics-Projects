@@ -21,8 +21,8 @@ The robot controlled with this application can either be simulated or real.
 2. During execution the user can control the robot with the keyboard keys. They allow to change the robot's speed and angle. 
 3. To finish the simulation, press the **_ESC_** keyboard key.
 4. After terminating execution, two files will be generated in the _Release_ folder:
-⋅⋅*_robotFrame.map_: This file contains the map of the detected obstacles by the robot's sensor, relative to the initial robot position.
-⋅⋅*_sceneFrame.map_: This file contains the map of the detected obstacles by the robot's sensor, relative to the scene's frame of reference.
+ 1. _robotFrame.map_: This file contains the map of the detected obstacles by the robot's sensor, relative to the initial robot position.
+ 2. _sceneFrame.map_: This file contains the map of the detected obstacles by the robot's sensor, relative to the scene's frame of reference.
 
 ## Credits
 
